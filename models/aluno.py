@@ -6,7 +6,7 @@ Base = declarative_base()
 
 class Aluno(Base):
     __tablename__ = "aluno"
-    matricula: Mapped[int] = mapped_column(ForeignKey("aluno.matricula"), primary_key=True)
+    matricula: Mapped[int] = mapped_column(primary_key=True)
     nome: Mapped[str]
     email: Mapped[str]
     curso: Mapped[str]

@@ -5,7 +5,7 @@ Base = declarative_base()
 
 class Livro(Base):
     __tablename__ = "livro"
-    codigo: Mapped[int] = mapped_column(ForeignKey("livro.codigo"), primary_key=True)
+    codigo: Mapped[int] = mapped_column(primary_key=True)
     titulo: Mapped[str]
     autor: Mapped[str]
     editora: Mapped[str]

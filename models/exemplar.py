@@ -5,5 +5,5 @@ Base = declarative_base()
 
 class Exemplar(Base):
     __tablename__ = "exemplar"
-    tombo: Mapped[int] = mapped_column(ForeignKey("exemplar.tombo"), primary_key=True)
+    tombo: Mapped[int] = mapped_column(primary_key=True)
     codigo_livro: Mapped[int] = mapped_column(ForeignKey("livro.codigo"))
