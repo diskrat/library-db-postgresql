@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class EmprestimoExemplar(Base):
     __tablename__ = "empr_exemplar"
-    codigo_emprestimo: Mapped[int] = mapped_column(ForeignKey("emprestimo.codigo"))
-    tombo_exemplar: Mapped[int] = mapped_column(ForeignKey("exemplar.tombo"))
+    codigo_emprestimo: Mapped[int] = mapped_column(ForeignKey("emprestimo.codigo"), primary_key=True)
+    tombo_exemplar: Mapped[int] = mapped_column(ForeignKey("exemplar.tombo"), primary_key=True)
     data_devolucao: Mapped[Optional[date]] = mapped_column(default=None)
     dias_atraso: Mapped[Optional[int]] = mapped_column(default=None)
