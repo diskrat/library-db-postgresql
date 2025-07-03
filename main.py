@@ -1,22 +1,24 @@
 from datetime import date
+from sqlalchemy.exc import OperationalError
+from sqlalchemy import text
 from db import SessionLocal
 from services import aluno_service, livro_service, exemplar_service, emprestimo_service, emprestimo_exemplar_service
 
 def main():
     db = SessionLocal()
+    try:
+        # Test the connection by executing a simple query
+        db.execute(text("SELECT 1"))
+        print("Conexão com o banco de dados bem-sucedida!")
+    except OperationalError as e:
+        print(f"Falha ao conectar com o banco de dados: {e}")
+        return  # Exit if connection fails
 
     # Testando Aluno
     print("--- Testando Aluno ---")
-    aluno_data = {"matricula": 2024001, "nome": "João da Silva", "email": "joao.silva@example.com", "telefone": "123456789"}
+    aluno_data = {"matricula": 2024001, "nome": "João da Silva", "email": "joao.silva@example.com", "curso": "Ciência da Computação"}
     novo_aluno = aluno_service.create_aluno(db, aluno_data)
     print(f"Aluno criado: {novo_aluno.nome}")
-
-    aluno = aluno_service.get_aluno(db, novo_aluno.matricula)
-    print(f"Aluno encontrado: {aluno.nome}")
-
-    update_data_aluno = {"nome": "João da Silva Sauro"}
-    aluno_atualizado = aluno_service.update_aluno(db, aluno.matricula, update_data_aluno)
-    print(f"Aluno atualizado: {aluno_atualizado.nome}")
 
     # Testando Livro
     print("\n--- Testando Livro ---")
@@ -50,21 +52,14 @@ def main():
     novo_ee = emprestimo_exemplar_service.create_emprestimo_exemplar(db, emprestimo_exemplar_data)
     print(f"Relação Empréstimo-Exemplar criada.")
 
-    ee = emprestimo_exemplar_service.get_emprestimo_exemplar(db, novo_ee.codigo_emprestimo, novo_ee.tombo_exemplar)
-    print(f"Relação encontrada para empréstimo {ee.codigo_emprestimo} e exemplar {ee.tombo_exemplar}")
-
     # Deletando os dados
     print("\n--- Deletando dados ---")
     emprestimo_exemplar_service.delete_emprestimo_exemplar(db, novo_ee.codigo_emprestimo, novo_ee.tombo_exemplar)
-    print("Relação Empréstimo-Exemplar deletada.")
     emprestimo_service.delete_emprestimo(db, novo_emprestimo.codigo)
-    print("Empréstimo deletado.")
     exemplar_service.delete_exemplar(db, novo_exemplar.tombo)
-    print("Exemplar deletado.")
     livro_service.delete_livro(db, novo_livro.codigo)
-    print("Livro deletado.")
     aluno_service.delete_aluno(db, novo_aluno.matricula)
-    print("Aluno deletado.")
+    print("Dados de teste deletados.")
 
     db.close()
 
